@@ -1,6 +1,7 @@
 """pico2d ??? ?? ??."""
 
-from math import hypot
+from math import hypot, isclose
+import sys
 from pathlib import Path
 from time import perf_counter
 
@@ -31,6 +32,27 @@ def move_position(x, y, dx, dy, dt):
     x = max(DRAW_WIDTH / 2, min(x, WINDOW_WIDTH - DRAW_WIDTH / 2))
     y = max(DRAW_HEIGHT / 2, min(y, WINDOW_HEIGHT - DRAW_HEIGHT / 2))
     return x, y
+
+
+def self_test():
+    """?? pico2d ?? ????????? ??? ????."""
+    center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+    assert move_position(*center, 0, 0, 0.05) == center
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1)):
+        x, y = move_position(*center, dx, dy, 0.05)
+        assert isclose(hypot(x - center[0], y - center[1]), 15, abs_tol=1e-9)
+    left, right = DRAW_WIDTH / 2, WINDOW_WIDTH - DRAW_WIDTH / 2
+    bottom, top = DRAW_HEIGHT / 2, WINDOW_HEIGHT - DRAW_HEIGHT / 2
+    for x, dx in ((left, -1), (right, 1)):
+        for y, dy in ((bottom, -1), (top, 1)):
+            assert move_position(x, y, dx, dy, 10) == (x, y)
+            moved_x, moved_y = move_position(*center, dx, dy, 10)
+            assert left <= moved_x <= right and bottom <= moved_y <= top
+    x, y = center
+    for _ in range(5):
+        x, y = move_position(x, y, 1, 0, 0.01)
+    assert isclose(x, move_position(*center, 1, 0, 0.05)[0], abs_tol=1e-9)
+    print('?????? ?????? ?? ?? ??')
 
 
 def main():
@@ -105,4 +127,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if sys.argv[1:] == ['--self-test']:
+        self_test()
+    else:
+        main()
