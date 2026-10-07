@@ -83,7 +83,11 @@ def main():
                 facing = 'RIGHT'
             old_position = (x, y)
             x, y = move_position(x, y, dx, dy, dt)
-            state = 'RUN' if (x, y) != old_position else 'IDLE'
+            next_state = 'RUN' if (x, y) != old_position else 'IDLE'
+            if next_state != state:
+                state = next_state
+                frame = 0
+                animation_elapsed = 0.0
             interval = RUN_INTERVAL if state == 'RUN' else IDLE_INTERVAL
             animation_elapsed += dt
             while animation_elapsed >= interval:
