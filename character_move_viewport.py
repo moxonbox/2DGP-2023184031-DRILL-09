@@ -23,6 +23,7 @@ def main():
 
     p.open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
     try:
+        background = p.load_image(str(RESOURCE_DIR / 'TUK_GROUND.png'))
         running = True
         while running:
             for event in p.get_events():
@@ -33,6 +34,7 @@ def main():
             if not running:
                 break
             p.clear_canvas()
+            background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
             p.update_canvas()
             p.delay(0.01)
     finally:
