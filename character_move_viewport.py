@@ -51,7 +51,9 @@ def main():
             if not running:
                 break
             dx = -1 if p.SDLK_LEFT in pressed_keys else int(p.SDLK_RIGHT in pressed_keys)
+            dy = 1 if p.SDLK_UP in pressed_keys else -int(p.SDLK_DOWN in pressed_keys)
             x += dx * 3
+            y += dy * 3
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
             character.clip_draw(
