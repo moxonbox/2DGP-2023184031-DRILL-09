@@ -6,6 +6,13 @@ RESOURCE_DIR = Path(__file__).resolve().parent
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 1024
+FRAME_WIDTH = 100
+FRAME_HEIGHT = 100
+DRAW_WIDTH = 100
+DRAW_HEIGHT = 100
+FRAME_COUNT = 8
+ROWS = {('IDLE', 'RIGHT'): 3, ('IDLE', 'LEFT'): 2,
+        ('RUN', 'RIGHT'): 1, ('RUN', 'LEFT'): 0}
 
 
 def main():
@@ -26,6 +33,8 @@ def main():
         background = p.load_image(str(RESOURCE_DIR / 'TUK_GROUND.png'))
         character = p.load_image(str(RESOURCE_DIR / 'animation_sheet.png'))
         x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
+        state, facing = 'IDLE', 'RIGHT'
+        frame = 0
         running = True
         while running:
             for event in p.get_events():
@@ -37,7 +46,10 @@ def main():
                 break
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
-            character.clip_draw(0, 300, 100, 100, x, y)
+            character.clip_draw(
+                frame * FRAME_WIDTH, ROWS[state, facing] * FRAME_HEIGHT,
+                FRAME_WIDTH, FRAME_HEIGHT, x, y, DRAW_WIDTH, DRAW_HEIGHT,
+            )
             p.update_canvas()
             p.delay(0.01)
     finally:
