@@ -1,11 +1,25 @@
 """pico2d ??? ?? ??."""
 
+from pathlib import Path
+
+RESOURCE_DIR = Path(__file__).resolve().parent
+
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 1024
 
 
 def main():
-    import pico2d as p
+    try:
+        import pico2d as p
+    except ModuleNotFoundError as error:
+        if error.name == 'pico2d':
+            raise SystemExit('pico2d? ?????: python -m pip install pico2d') from error
+        raise
+
+    for name in ('TUK_GROUND.png', 'animation_sheet.png'):
+        path = RESOURCE_DIR / name
+        if not path.is_file():
+            raise FileNotFoundError(f'??? ??? ????: {path}')
 
     p.open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
     try:
