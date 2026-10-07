@@ -1,5 +1,6 @@
 """pico2d ??? ?? ??."""
 
+from math import hypot
 from pathlib import Path
 from time import perf_counter
 
@@ -17,6 +18,15 @@ MAX_DT = 0.05
 LOOP_DELAY = 0.01
 ROWS = {('IDLE', 'RIGHT'): 3, ('IDLE', 'LEFT'): 2,
         ('RUN', 'RIGHT'): 1, ('RUN', 'LEFT'): 0}
+
+
+def move_position(x, y, dx, dy, dt):
+    """?? ??? ????? ?? ???? ????."""
+    length = hypot(dx, dy)
+    if length:
+        x += dx / length * MOVE_SPEED * dt
+        y += dy / length * MOVE_SPEED * dt
+    return x, y
 
 
 def main():
@@ -64,8 +74,7 @@ def main():
                 facing = 'LEFT'
             elif dx > 0:
                 facing = 'RIGHT'
-            x += dx * MOVE_SPEED * dt
-            y += dy * MOVE_SPEED * dt
+            x, y = move_position(x, y, dx, dy, dt)
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
             character.clip_draw(
