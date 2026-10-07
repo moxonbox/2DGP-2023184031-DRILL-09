@@ -81,9 +81,8 @@ def main():
                 facing = 'LEFT'
             elif dx > 0:
                 facing = 'RIGHT'
-            old_position = (x, y)
             x, y = move_position(x, y, dx, dy, dt)
-            next_state = 'RUN' if (x, y) != old_position else 'IDLE'
+            next_state = 'RUN' if dx or dy else 'IDLE'
             if next_state != state:
                 state = next_state
                 frame = 0
