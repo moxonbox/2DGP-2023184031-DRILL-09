@@ -13,6 +13,7 @@ FRAME_HEIGHT = 100
 DRAW_WIDTH = 100
 DRAW_HEIGHT = 100
 FRAME_COUNT = 8
+IDLE_INTERVAL = 0.125
 MOVE_SPEED = 300
 MAX_DT = 0.05
 LOOP_DELAY = 0.01
@@ -53,6 +54,7 @@ def main():
         x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
         state, facing = 'IDLE', 'RIGHT'
         frame = 0
+        animation_elapsed = 0.0
         pressed_keys = set()
         arrow_keys = {p.SDLK_LEFT, p.SDLK_RIGHT, p.SDLK_UP, p.SDLK_DOWN}
         previous_time = perf_counter()
@@ -79,6 +81,10 @@ def main():
             elif dx > 0:
                 facing = 'RIGHT'
             x, y = move_position(x, y, dx, dy, dt)
+            animation_elapsed += dt
+            while animation_elapsed >= IDLE_INTERVAL:
+                animation_elapsed -= IDLE_INTERVAL
+                frame = (frame + 1) % FRAME_COUNT
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
             character.clip_draw(
