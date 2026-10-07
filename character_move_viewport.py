@@ -35,6 +35,8 @@ def main():
         x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
         state, facing = 'IDLE', 'RIGHT'
         frame = 0
+        pressed_keys = set()
+        arrow_keys = {p.SDLK_LEFT, p.SDLK_RIGHT, p.SDLK_UP, p.SDLK_DOWN}
         running = True
         while running:
             for event in p.get_events():
@@ -42,6 +44,10 @@ def main():
                     event.type == p.SDL_KEYDOWN and event.key == p.SDLK_ESCAPE
                 ):
                     running = False
+                elif event.type == p.SDL_KEYDOWN and event.key in arrow_keys:
+                    pressed_keys.add(event.key)
+                elif event.type == p.SDL_KEYUP and event.key in arrow_keys:
+                    pressed_keys.discard(event.key)
             if not running:
                 break
             p.clear_canvas()
