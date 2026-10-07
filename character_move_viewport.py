@@ -26,6 +26,7 @@ def move_position(x, y, dx, dy, dt):
     if length:
         x += dx / length * MOVE_SPEED * dt
         y += dy / length * MOVE_SPEED * dt
+    x = max(DRAW_WIDTH / 2, min(x, WINDOW_WIDTH - DRAW_WIDTH / 2))
     return x, y
 
 
