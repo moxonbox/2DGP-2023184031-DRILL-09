@@ -52,6 +52,10 @@ def main():
                 break
             dx = int(p.SDLK_RIGHT in pressed_keys) - int(p.SDLK_LEFT in pressed_keys)
             dy = int(p.SDLK_UP in pressed_keys) - int(p.SDLK_DOWN in pressed_keys)
+            if dx < 0:
+                facing = 'LEFT'
+            elif dx > 0:
+                facing = 'RIGHT'
             x += dx * 3
             y += dy * 3
             p.clear_canvas()
