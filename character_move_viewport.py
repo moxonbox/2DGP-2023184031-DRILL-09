@@ -1,4 +1,4 @@
-"""pico2d ??? ?? ??."""
+"""pico2d 캐릭터 이동 데모."""
 
 from math import hypot, isclose
 import sys
@@ -24,7 +24,7 @@ ROWS = {('IDLE', 'RIGHT'): 3, ('IDLE', 'LEFT'): 2,
 
 
 def move_position(x, y, dx, dy, dt):
-    """?? ??? ????? ?? ???? ????."""
+    """입력 벡터를 정규화하여 시간 기반으로 이동한다."""
     length = hypot(dx, dy)
     if length:
         x += dx / length * MOVE_SPEED * dt
@@ -35,7 +35,7 @@ def move_position(x, y, dx, dy, dt):
 
 
 def self_test():
-    """?? pico2d ?? ????????? ??? ????."""
+    """창과 pico2d 없이 이동·정규화·경계 규칙을 검증한다."""
     center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
     assert move_position(*center, 0, 0, 0.05) == center
     for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1)):
@@ -52,23 +52,23 @@ def self_test():
     for _ in range(5):
         x, y = move_position(x, y, 1, 0, 0.01)
     assert isclose(x, move_position(*center, 1, 0, 0.05)[0], abs_tol=1e-9)
-    print('?????? ?????? ?? ?? ??')
+    print('이동·대각선 속도·뷰포트 경계 검증 통과')
 
 
 def main():
     if not (0 < DRAW_WIDTH <= WINDOW_WIDTH and 0 < DRAW_HEIGHT <= WINDOW_HEIGHT):
-        raise ValueError('??? ??? ??? ?? ?? ????? ???.')
+        raise ValueError('뷰포트 크기는 캐릭터 출력 크기 이상이어야 합니다.')
     try:
         import pico2d as p
     except ModuleNotFoundError as error:
         if error.name == 'pico2d':
-            raise SystemExit('pico2d? ?????: python -m pip install pico2d') from error
+            raise SystemExit('pico2d가 필요합니다: python -m pip install pico2d') from error
         raise
 
     for name in ('TUK_GROUND.png', 'animation_sheet.png'):
         path = RESOURCE_DIR / name
         if not path.is_file():
-            raise FileNotFoundError(f'??? ??? ????: {path}')
+            raise FileNotFoundError(f'리소스 파일이 없습니다: {path}')
 
     p.open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
     try:
