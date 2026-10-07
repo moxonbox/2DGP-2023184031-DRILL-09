@@ -14,6 +14,7 @@ DRAW_WIDTH = 100
 DRAW_HEIGHT = 100
 FRAME_COUNT = 8
 IDLE_INTERVAL = 0.125
+RUN_INTERVAL = 0.1
 MOVE_SPEED = 300
 MAX_DT = 0.05
 LOOP_DELAY = 0.01
@@ -80,10 +81,13 @@ def main():
                 facing = 'LEFT'
             elif dx > 0:
                 facing = 'RIGHT'
+            old_position = (x, y)
             x, y = move_position(x, y, dx, dy, dt)
+            state = 'RUN' if (x, y) != old_position else 'IDLE'
+            interval = RUN_INTERVAL if state == 'RUN' else IDLE_INTERVAL
             animation_elapsed += dt
-            while animation_elapsed >= IDLE_INTERVAL:
-                animation_elapsed -= IDLE_INTERVAL
+            while animation_elapsed >= interval:
+                animation_elapsed -= interval
                 frame = (frame + 1) % FRAME_COUNT
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
