@@ -24,6 +24,8 @@ def main():
     p.open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
     try:
         background = p.load_image(str(RESOURCE_DIR / 'TUK_GROUND.png'))
+        character = p.load_image(str(RESOURCE_DIR / 'animation_sheet.png'))
+        x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
         running = True
         while running:
             for event in p.get_events():
@@ -35,6 +37,7 @@ def main():
                 break
             p.clear_canvas()
             background.draw(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT)
+            character.clip_draw(0, 300, 100, 100, x, y)
             p.update_canvas()
             p.delay(0.01)
     finally:
