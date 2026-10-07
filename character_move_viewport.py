@@ -27,10 +27,13 @@ def move_position(x, y, dx, dy, dt):
         x += dx / length * MOVE_SPEED * dt
         y += dy / length * MOVE_SPEED * dt
     x = max(DRAW_WIDTH / 2, min(x, WINDOW_WIDTH - DRAW_WIDTH / 2))
+    y = max(DRAW_HEIGHT / 2, min(y, WINDOW_HEIGHT - DRAW_HEIGHT / 2))
     return x, y
 
 
 def main():
+    if not (0 < DRAW_WIDTH <= WINDOW_WIDTH and 0 < DRAW_HEIGHT <= WINDOW_HEIGHT):
+        raise ValueError('??? ??? ??? ?? ?? ????? ???.')
     try:
         import pico2d as p
     except ModuleNotFoundError as error:
